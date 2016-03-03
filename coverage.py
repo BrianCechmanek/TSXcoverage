@@ -16,8 +16,8 @@
 
 
 import csv
-import selenium
-from urllib.request import urlopen
+from selenium import webdriver
+import time          # to not overdo it, we'll sleep a few seconds between page opens.
 from bs4 import BeautifulSoup
 
 TICKERS = []    # dictionary would be more mem efficient, but have use for list later
@@ -63,10 +63,14 @@ def search_web():
         browser = webdriver.Firefox()
         try:
             browser.get(url)
+            browser.find_element_by_id('qm_maintet')
+            
         except webdriver.remote.errorhandler.errorCode as e:
             print(e)
-        parse_page(soup)
-    
+        browser.quit()
+        time.sleep(5)
+        # OLD wayparse_page(soup)
+        # now need to parse_page( "SAVED PAGE")
 
 # see test_write for format
 def write_csv():
