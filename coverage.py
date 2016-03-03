@@ -17,6 +17,7 @@
 
 import csv
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 import time          # to not overdo it, we'll sleep a few seconds between page opens.
 from bs4 import BeautifulSoup
 
@@ -58,14 +59,13 @@ def search_web():
     """ go through each ticker, and see if there is coverage. Use bs4 here.
          add to dictionary each item, and it's coverage status. Again, not most
          memory efficient, but is small enough to maintain list and dictionary."""
-    for i in range(5): #len(TICKERS)) just 3 for test casing
+    for i in range(1): #len(TICKERS)) just 3 for test casing
         url = SITE + str(TICKERS[i])
-        browser = webdriver.Firefox()
+        browser = webdriver.PhantomJS()
         try:
             browser.get(url)
-            browser.find_element_by_id('qm_maintet')
-            
-        except webdriver.remote.errorhandler.errorCode as e:
+            browser.find_element_by_id('qm_maintext')
+        except TimeoutException as e:
             print(e)
         browser.quit()
         time.sleep(5)
