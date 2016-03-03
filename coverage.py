@@ -1,7 +1,6 @@
 #!/sw/bin/python3
 
 """ short script to scrape TMXmoney.com for analyst coverage of all tickers """
-
 # info is under http://web.tmxmoney.com/research.php?qm_symbol=XXX.UN (.UN is only for funds)
 # steps will be
 # DONE 1. create csv with two columns: ticker, coverage
@@ -12,8 +11,12 @@
 # 4. handle for page not existing (in link address "invalid=true")
 # 5. write csv
 # 6. profit
+""" long term"""
+# 1. make list update from TMX website
+
 
 import csv
+import selenium
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
@@ -57,10 +60,11 @@ def search_web():
          memory efficient, but is small enough to maintain list and dictionary."""
     for i in range(5): #len(TICKERS)) just 3 for test casing
         url = SITE + str(TICKERS[i])
+        browser = webdriver.Firefox()
         try:
-            soup = BeautifulSoup(urlopen(url))
-        except urllib.error.URLError as e:
-            print(e.reason)
+            browser.get(url)
+        except webdriver.remote.errorhandler.errorCode as e:
+            print(e)
         parse_page(soup)
     
 
