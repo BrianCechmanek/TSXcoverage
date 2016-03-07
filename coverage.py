@@ -1,6 +1,9 @@
 #!/sw/bin/python3
 
-""" short script to scrape TMXmoney.com for analyst coverage of all tickers """
+""" short script to check over TMXmoney.com for analyst coverage of all tickers.
+    Do with this file at your own risk - Different sites will have different
+    terms of use. TMXmoney.com did not show a clear policy against this sort 
+    of usage. """
 # info is under http://web.tmxmoney.com/research.php?qm_symbol=XXX.UN (.UN is only for funds)
 # steps will be
 # DONE 1. create csv with two columns: ticker, coverage
@@ -10,7 +13,6 @@
 # did that ever take a while to figure out...
 # 4. handle for page not existing (in link address "invalid=true")
 # DONE 5. write csv
-# DONE 6. profit
 """ long term"""
 # 1. make list update from TMX website
 
@@ -20,7 +22,7 @@ from selenium.common.exceptions import TimeoutException
 import random
 import time          # to not overdo it, we'll sleep a few seconds between page opens.
 import sys
-# from bs4 import BeautifulSoup    # not currently used. will when raw HTML avail
+# from bs4 import BeautifulSoup    # not used in current implementation (not JS enabled)
 
 TICKERS = []    # dictionary would be more mem efficient, but have use for list later
 COVERAGE = {}
@@ -60,7 +62,7 @@ def make_tickers():
     print("make_tickers completed")
     
 def search_web():
-    """ go through each ticker, and see if there is coverage. Use bs4 here.
+    """ go through each ticker, and see if there is coverage. Use phantomJS here.
          add to dictionary each item, and it's coverage status. Again, not most
          memory efficient, but is small enough to maintain list and dictionary."""
     print("searching the web...")
@@ -82,10 +84,8 @@ def search_web():
             continue
         write_csv_row('tsxcoverage.csv', i)    # just incasies
         #browser.quit()
-        rand_time = random.randint(1,3)  # average 6 seconds between requests. should be fair
+        rand_time = random.randint(3,10)  # average 6 seconds between requests. should be fair
         time.sleep(rand_time)
-        # OLD wayparse_page(soup)
-        # now need to parse_page( "SAVED PAGE")
     browser.quit()
     print("\rsearch_web complete")
 
